@@ -8,27 +8,12 @@ open System
 [<Route("[controller]")>]
 type CoursesController () =
     inherit ControllerBase()
-
+    
     let courses =
         [|
-            { 
-                ID = Guid.NewGuid().ToString();
-                Name = "Test course 1";
-                DateAdded = DateTime.Now;
-                DateUpdated = DateTime.Now; 
-            }
-            { 
-                ID = Guid.NewGuid().ToString();
-                Name = "Test course 2";
-                DateAdded = DateTime.Now;
-                DateUpdated = DateTime.Now; 
-            }
-            { 
-                ID = Guid.NewGuid().ToString();
-                Name = "Test course 3";
-                DateAdded = DateTime.Now;
-                DateUpdated = DateTime.Now; 
-            }
+            new Course(Guid.NewGuid().ToString(), DateTime.Now, DateTime.Now, "Test course 1")
+            new Course(Guid.NewGuid().ToString(), DateTime.Now, DateTime.Now, "Test course 2")
+            new Course(Guid.NewGuid().ToString(), DateTime.Now, DateTime.Now, "Test course 3")
         |]
 
     [<HttpGet>]
