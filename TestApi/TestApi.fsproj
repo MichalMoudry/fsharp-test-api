@@ -3,11 +3,11 @@
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Db/DbContext.fs" />
     <Compile Include="Models.fs" />
     <Compile Include="WeatherForecast.fs" />
     <Compile Include="Controllers/CoursesController.fs" />
     <Compile Include="Controllers/WeatherForecastController.fs" />
+    <Compile Include="Db/DbContext.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
@@ -20,5 +20,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
   </ItemGroup>
 </Project>
