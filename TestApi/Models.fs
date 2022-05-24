@@ -24,11 +24,20 @@ type Entity (ID: string, DateAdded: DateTime, DateUpdated: DateTime) =
         with get() = dateUpdated
         and set (value) = dateUpdated <- value
 
-type Course (ID: string, DateAdded: DateTime, DateUpdated: DateTime, Name: string) =
-    inherit Entity(ID, DateAdded, DateUpdated)
-    let mutable name = Name
+//type Course (ID: string, DateAdded: DateTime, DateUpdated: DateTime, Name: string) =
+    //inherit Entity(ID, DateAdded, DateUpdated)
+    //let mutable name = Name
 
-    [<Required>]
-    member _.Name
-        with get() = name
-        and set (value) = name <- value
+    //[<Required>]
+    //member _.Name
+        //with get() = name
+        //and set (value) = name <- value
+
+/// Course type.
+[<CLIMutable>]
+type Course = {
+    ID: string
+    Name: string
+    DateAdded: DateTime
+    DateUpdated: DateTime
+}

@@ -4,18 +4,27 @@ open System
 open System.Collections.Generic
 open Microsoft.EntityFrameworkCore
 open TestApi.Models
-open System.Linq
 
 module DataContext =
-    type CoursesContext (options: DbContextOptions<CoursesContext>) =
-        inherit DbContext(options)
+    type CoursesContext () =
+        inherit Microsoft.EntityFrameworkCore.DbContext()
+            override _.OnConfiguring(optionsBuilder) =
+                optionsBuilder.UseSqlite("Data Source=courses.db") |> ignore
 
-        [<DefaultValue()>]
-        val mutable courses: DbSet<Course>
+        member self.Courses = self.Set<Course>()
 
-        member public this.Courses
-            with get() = this.courses
-            and set (value) = this.courses <- value
+        //let mutable courses: DbSet<Course> = null
+
+        //member _.Courses
+            //with get() = courses
+            //and set (value) = courses <- value
+
+        //[<DefaultValue()>]
+        //val mutable courses: DbSet<Course>
+
+        //member public this.Courses
+            //with get() = this.courses
+            //and set (value) = this.courses <- value
         
-        member this.GetCourse(id: string) =
-            this.courses.SingleOrDefault(fun i -> i.ID.Equals(id))
+        //member this.GetCourse(id: string) =
+            //this.courses.SingleOrDefault(fun i -> i.ID.Equals(id))

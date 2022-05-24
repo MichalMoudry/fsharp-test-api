@@ -11,9 +11,9 @@ type CoursesController () =
     
     let courses =
         [|
-            new Course(Guid.NewGuid().ToString(), DateTime.Now, DateTime.Now, "Test course 1")
-            new Course(Guid.NewGuid().ToString(), DateTime.Now, DateTime.Now, "Test course 2")
-            new Course(Guid.NewGuid().ToString(), DateTime.Now, DateTime.Now, "Test course 3")
+            5
+            1
+            3
         |]
 
     [<HttpGet>]

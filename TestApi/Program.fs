@@ -13,6 +13,7 @@ open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.Logging
+open TestApi.Db.DataContext
 
 module Program =
     let exitCode = 0
@@ -23,6 +24,7 @@ module Program =
         let builder = WebApplication.CreateBuilder(args)
 
         builder.Services.AddControllers()
+        builder.Services.AddDbContext<CoursesContext>()
 
         let app = builder.Build()
 
