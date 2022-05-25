@@ -1,30 +1,22 @@
 namespace TestApi.Db
 
-open System
-open System.Collections.Generic
 open Microsoft.EntityFrameworkCore
+open EntityFrameworkCore.FSharp.Extensions
 open TestApi.Models
 
 module DataContext =
     type CoursesContext () =
-        inherit Microsoft.EntityFrameworkCore.DbContext()
-            override _.OnConfiguring(optionsBuilder) =
-                optionsBuilder.UseSqlite("Data Source=courses.db") |> ignore
+        inherit DbContext()
 
-        member self.Courses = self.Set<Course>()
+        [<DefaultValue>]
+        val mutable private courses: DbSet<Course>
 
-        //let mutable courses: DbSet<Course> = null
+        member this.Courses
+            with get() = this.courses
+            and set (value) = this.courses <- value
 
-        //member _.Courses
-            //with get() = courses
-            //and set (value) = courses <- value
+        override _.OnModelCreating(builder) =
+            builder.RegisterOptionTypes()
 
-        //[<DefaultValue()>]
-        //val mutable courses: DbSet<Course>
-
-        //member public this.Courses
-            //with get() = this.courses
-            //and set (value) = this.courses <- value
-        
-        //member this.GetCourse(id: string) =
-            //this.courses.SingleOrDefault(fun i -> i.ID.Equals(id))
+        override _.OnConfiguring(optionsBuilder) =
+            optionsBuilder.UseSqlite("Data Source=courses.db") |> ignore

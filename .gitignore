@@ -1,3 +1,4 @@
 TestApi/.vs/
 TestApi/bin/
 TestApi/obj/
+TestApi/*.db
