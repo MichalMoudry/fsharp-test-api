@@ -8,4 +8,8 @@ type CoursesOperations(context: CoursesContext) =
 
     /// Function for adding a new course to db.
     member _.AddCourse(course: Course) =
-        true
+        task {
+            dbContext.Courses.Add(course) |> ignore
+            dbContext.SaveChangesAsync() |> ignore
+            return true
+        }

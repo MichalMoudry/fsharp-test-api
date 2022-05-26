@@ -25,9 +25,14 @@ type CoursesController (context: DataContext.CoursesContext) =
         id
     
     [<HttpPost>]
-    member _.Post(course: Course) =
-        //coursesOps.AddCourse(course) |> ignore
-        printfn $"POST: {course}"
+    member this.Post(course: Course): IActionResult =
+        if not (String.IsNullOrEmpty(course.ID)) then
+            task {
+                coursesOps.AddCourse(course) |> ignore
+            } |> ignore
+            this.Ok("Entity was added.")
+        else
+            this.BadRequest("Entity needs an ID.")
 
     [<HttpPut>]
     member _.Put(course: Course) =
