@@ -14,15 +14,19 @@ type CoursesController (context: DataContext.CoursesContext) =
 
     [<HttpGet>]
     member _.Get() =
-        [|
-            5
-            1
-            3
-        |]
+        coursesOps.GetCourses()
     
     [<HttpGet("{id}")>]
-    member _.Get(id: string) =
-        id
+    member this.Get(id: string): IActionResult =
+        let course = coursesOps.GetCourse(id)
+        let result =
+            match box course with
+                | null -> false
+                | _ -> true
+        if result then
+            this.Ok(course)
+        else
+            this.BadRequest("Entity with this ID does not exist.")
     
     [<HttpPost>]
     member this.Post(course: Course): IActionResult =
@@ -39,5 +43,8 @@ type CoursesController (context: DataContext.CoursesContext) =
         printfn $"PUT: {course}"
 
     [<HttpDelete("{id}")>]
-    member _.Delete(id: string) =
-        printfn $"DELETE: {id}"
+    member this.Delete(id: string): IActionResult =
+        task {
+            coursesOps.DeleteCourse(id) |> ignore
+        } |> ignore
+        this.Ok("Object was deleted.")
