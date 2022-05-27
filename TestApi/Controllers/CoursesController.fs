@@ -39,8 +39,10 @@ type CoursesController (context: DataContext.CoursesContext) =
             this.BadRequest("Entity needs an ID.")
 
     [<HttpPut>]
-    member _.Put(course: Course) =
-        printfn $"PUT: {course}"
+    member this.Put(course: Course) =
+        let updateTask = coursesOps.UpdateCourse(course)
+        updateTask.Wait()
+        this.Ok(updateTask.Result)
 
     [<HttpDelete("{id}")>]
     member this.Delete(id: string): IActionResult =

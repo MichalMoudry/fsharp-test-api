@@ -7,7 +7,7 @@ open System.ComponentModel.DataAnnotations
 [<CLIMutable>]
 type Course = {
     [<Key>] ID: string
-    Name: string
+    mutable Name: string
     DateAdded: DateTime
-    DateUpdated: DateTime
+    mutable DateUpdated: DateTime
 }

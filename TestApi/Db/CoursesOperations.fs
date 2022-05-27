@@ -32,3 +32,13 @@ type CoursesOperations(context: CoursesContext) =
             dbContext.Courses.Remove(course) |> ignore
             dbContext.SaveChangesAsync() |> ignore
         }
+
+    /// Method for updating an entity.
+    member this.UpdateCourse(newCourseData: Course) =
+        task {
+            let course = this.GetCourse(newCourseData.ID)
+            course.Name <- newCourseData.Name
+            course.DateUpdated <- System.DateTime.Now
+            dbContext.SaveChangesAsync() |> ignore
+            return course
+        }
