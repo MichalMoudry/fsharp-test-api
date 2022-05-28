@@ -3,6 +3,7 @@
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Services\ApiKeyProvider.fs" />
     <Compile Include="Models.fs" />
     <Compile Include="Db/DbContext.fs" />
     <Compile Include="Db\CoursesOperations.fs" />
@@ -12,6 +13,7 @@
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="AspNetCore.Authentication.ApiKey" Version="6.0.1" />
     <PackageReference Include="EntityFrameworkCore.FSharp" Version="6.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.5" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
