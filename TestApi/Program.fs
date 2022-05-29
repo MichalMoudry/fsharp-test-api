@@ -14,8 +14,6 @@ open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.Logging
 open TestApi.Db.DataContext
-open AspNetCore.Authentication.ApiKey
-open Microsoft.AspNetCore.Authorization
 
 module Program =
     let exitCode = 0
