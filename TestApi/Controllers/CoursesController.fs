@@ -19,12 +19,8 @@ type CoursesController (context: DataContext.CoursesContext) =
     [<HttpGet("{id}")>]
     member this.Get(id: string): IActionResult =
         let course = coursesOps.GetCourse(id)
-        let result =
-            match box course with
-                | null -> false
-                | _ -> true
-        if result then
-            this.Ok(course)
+        if course.IsSome then
+            this.Ok(course.Value)
         else
             this.BadRequest("Entity with this ID does not exist.")
     
@@ -39,10 +35,12 @@ type CoursesController (context: DataContext.CoursesContext) =
             this.BadRequest("Entity needs an ID.")
 
     [<HttpPut>]
-    member this.Put(course: Course) =
+    member this.Put(course: Course): IActionResult =
         let updateTask = coursesOps.UpdateCourse(course)
         updateTask.Wait()
-        this.Ok(updateTask.Result)
+        match updateTask.Result with
+            | true -> this.Ok(course)
+            | false -> this.BadRequest("Entity does not exist.")
 
     [<HttpDelete("{id}")>]
     member this.Delete(id: string): IActionResult =

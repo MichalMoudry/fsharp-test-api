@@ -11,7 +11,7 @@ type ApiKeyProvider(config: IConfiguration) =
     
         member _.ProvideAsync(key: string) =
             let is_config_key = System.Convert.ToBoolean(_configuration[$"ApiKeys:{key}"])
-            let test: ApiKey = new ApiKey(key, "test_user")
+            let test = new ApiKey(key, "test_user")
             task {
                 return null
             }

@@ -14,6 +14,8 @@ open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.Logging
 open TestApi.Db.DataContext
+open TestApi.Services
+open AspNetCore.Authentication.ApiKey
 
 module Program =
     let exitCode = 0
@@ -26,15 +28,13 @@ module Program =
         builder.Services.AddControllers()
         builder.Services.AddDbContext<CoursesContext>()
         //builder.Services.AddAuthentication(ApiKeyDefaults.AuthenticationScheme)
-            //.AddApiKeyInHeaderOrQueryParams(fun options ->
-            //{
-                //options.Realm = "Test web API"
-            //})
+            //.AddApiKeyInHeaderOrQueryParams<ApiKeyProvider>()
 
         let app = builder.Build()
 
         app.UseHttpsRedirection()
 
+        app.UseAuthentication()
         app.UseAuthorization()
         app.MapControllers()
 
