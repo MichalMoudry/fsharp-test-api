@@ -25,10 +25,15 @@ module Program =
 
         let builder = WebApplication.CreateBuilder(args)
 
+        let apiKeyConfig (options : ApiKeyOptions) =
+            do
+                options.Realm <- "Sample Web API"
+                options.KeyName <- "X-API-KEY"
+
         builder.Services.AddControllers()
         builder.Services.AddDbContext<CoursesContext>()
-        //builder.Services.AddAuthentication(ApiKeyDefaults.AuthenticationScheme)
-            //.AddApiKeyInHeaderOrQueryParams<ApiKeyProvider>()
+        builder.Services.AddAuthentication(ApiKeyDefaults.AuthenticationScheme)
+            .AddApiKeyInHeaderOrQueryParams<ApiKeyProvider>(apiKeyConfig)
 
         let app = builder.Build()
 
