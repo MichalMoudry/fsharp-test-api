@@ -16,7 +16,7 @@ type Course = {
 }
 
 /// Class representing an API key.
-type ApiKey(key: string, owner: string, ?claims: List<Claim>) =
+type ApiKey(key: string, isValid: bool, owner: string, ?claims: List<Claim>) =
     interface IApiKey with
         member _.Claims: IReadOnlyCollection<Claim> =
             if claims.IsSome then
@@ -27,3 +27,5 @@ type ApiKey(key: string, owner: string, ?claims: List<Claim>) =
             key
         member _.OwnerName: string = 
             owner
+    member _.IsValid: bool =
+        isValid

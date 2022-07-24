@@ -4,7 +4,9 @@ open Microsoft.AspNetCore.Mvc
 open TestApi.Models
 open TestApi.Db
 open System
+open Microsoft.AspNetCore.Authorization
 
+[<Authorize>]
 [<ApiController>]
 [<Route("[controller]")>]
 type CoursesController (context: DataContext.CoursesContext) =
