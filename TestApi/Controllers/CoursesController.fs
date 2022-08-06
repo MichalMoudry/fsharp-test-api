@@ -20,21 +20,23 @@ type CoursesController (context: DataContext.CoursesContext) =
     
     [<HttpGet("{id}")>]
     member this.Get(id: string): IActionResult =
-        let course = coursesOps.GetCourse(id)
-        if course.IsSome then
-            this.Ok(course.Value)
+        let parseResult, guid = Guid.TryParse(id)
+        if parseResult then
+            let course = coursesOps.GetCourse(guid)
+            if course.IsSome then
+                this.Ok(course.Value)
+            else
+                this.BadRequest("Entity with this ID does not exist.")
         else
-            this.BadRequest("Entity with this ID does not exist.")
+            this.BadRequest("Invalid id.")
     
     [<HttpPost>]
     member this.Post(course: Course): IActionResult =
-        if not (String.IsNullOrEmpty(course.ID)) then
-            task {
-                coursesOps.AddCourse(course) |> ignore
-            } |> ignore
-            this.Ok("Entity was added.")
-        else
-            this.BadRequest("Entity needs an ID.")
+        course.Id <- Guid.NewGuid()
+        task {
+            coursesOps.AddCourse(course) |> ignore
+        } |> ignore
+        this.Ok(course)
 
     [<HttpPut>]
     member this.Put(course: Course): IActionResult =
@@ -46,7 +48,11 @@ type CoursesController (context: DataContext.CoursesContext) =
 
     [<HttpDelete("{id}")>]
     member this.Delete(id: string): IActionResult =
-        task {
-            coursesOps.DeleteCourse(id) |> ignore
-        } |> ignore
-        this.Ok("Object was deleted.")
+        let parseResult, guid = Guid.TryParse(id)
+        if parseResult then
+            task {
+                coursesOps.DeleteCourse(guid) |> ignore
+            } |> ignore
+            this.Ok("Object was deleted.")
+        else
+            this.BadRequest("Invalid id.")

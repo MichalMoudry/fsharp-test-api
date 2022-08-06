@@ -1,5 +1,6 @@
 namespace TestApi.Db
 
+open System
 open TestApi.Db.DataContext
 open TestApi.Models
 open System.Linq
@@ -17,9 +18,9 @@ type CoursesOperations(context: CoursesContext) =
         }
 
     /// Method for obtaining a single Course entity.
-    member _.GetCourse(courseID: string) =
+    member _.GetCourse(courseID: Guid) =
         try
-            Some(dbContext.Courses.Single(fun i -> i.ID.Equals(courseID)))
+            Some(dbContext.Courses.Single(fun i -> i.Id.Equals(courseID)))
         with
             | :? System.InvalidOperationException -> None
 
@@ -29,7 +30,7 @@ type CoursesOperations(context: CoursesContext) =
 
     /// <summary>Method for removing a course from db.</summary>
     /// <param name="courseID">ID of a course.</param>
-    member this.DeleteCourse(courseID: string) =
+    member this.DeleteCourse(courseID: Guid) =
         task {
             let course = this.GetCourse(courseID)
             if course.IsSome then
@@ -43,7 +44,7 @@ type CoursesOperations(context: CoursesContext) =
     /// Method for updating an entity.
     member this.UpdateCourse(newCourseData: Course) =
         task {
-            let course = this.GetCourse(newCourseData.ID)
+            let course = this.GetCourse(newCourseData.Id)
             if course.IsSome then
                 course.Value.Name <- newCourseData.Name
                 course.Value.DateUpdated <- System.DateTime.Now
