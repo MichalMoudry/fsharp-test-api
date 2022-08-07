@@ -8,8 +8,7 @@
     <Compile Include="Db\DbContext.fs" />
     <Compile Include="Db\CoursesOperations.fs" />
     <Compile Include="Controllers\CoursesController.fs" />
-    <Compile Include="Migrations\CoursesContextModelSnapshot.fs" />
-    <Compile Include="Migrations\20220525133505_InitialMigration.fs" />
+    <Compile Include="Migrations\*" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>

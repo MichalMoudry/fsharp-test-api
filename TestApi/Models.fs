@@ -6,13 +6,13 @@ open System.Collections.Generic
 open AspNetCore.Authentication.ApiKey
 open System.Security.Claims
 
+/// Course's tag
 [<CLIMutable>]
 type Tag = {
-    [<Key>] ID: string
+    [<Key>] Id: Guid
     Name: string
     DateAdded: DateTime
     mutable DateUpdated: DateTime
-    CourseId: string
 }
 
 /// Course type.
@@ -22,7 +22,13 @@ type Course = {
     mutable Name: string
     DateAdded: DateTime
     mutable DateUpdated: DateTime
-    Tags: list<Tag>
+}
+
+[<CLIMutable>]
+type CoursesTags = {
+    [<Key>] Id: Guid
+    TagId: Guid
+    CourseId: Guid
 }
 
 /// Class representing an API key.

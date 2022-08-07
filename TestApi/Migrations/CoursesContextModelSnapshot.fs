@@ -18,8 +18,9 @@ type CoursesContextModelSnapshot() =
 
         modelBuilder.Entity("TestApi.Models.Course", (fun b ->
 
-            b.Property<string>("Id")
+            b.Property<Guid>("Id")
                 .IsRequired(true)
+                .ValueGeneratedOnAdd()
                 .HasColumnType("TEXT")
                 |> ignore
 
@@ -44,17 +45,53 @@ type CoursesContextModelSnapshot() =
 
             b.ToTable("Courses") |> ignore
 
+
+            b.HasData([|
+                {| Id = Guid("d88bf905-93b9-480f-8570-0857179ff142"); DateAdded = DateTime(2022, 8, 7, 16, 29, 59, 601, DateTimeKind.Local).AddTicks(822L); DateUpdated = DateTime(2022, 8, 7, 16, 29, 59, 601, DateTimeKind.Local).AddTicks(861L); Name = "Test course 1" |}
+                {| Id = Guid("acb5f349-5709-4b95-b065-66942262d860"); DateAdded = DateTime(2022, 8, 7, 16, 29, 59, 601, DateTimeKind.Local).AddTicks(868L); DateUpdated = DateTime(2022, 8, 7, 16, 29, 59, 601, DateTimeKind.Local).AddTicks(870L); Name = "Test course 2" |}
+                {| Id = Guid("b952c847-0176-4000-9204-122179099cec"); DateAdded = DateTime(2022, 8, 7, 16, 29, 59, 601, DateTimeKind.Local).AddTicks(874L); DateUpdated = DateTime(2022, 8, 7, 16, 29, 59, 601, DateTimeKind.Local).AddTicks(876L); Name = "Test course 3" |}
+             |]) |> ignore
         )) |> ignore
 
-        modelBuilder.Entity("TestApi.Models.Tag", (fun b ->
+        modelBuilder.Entity("TestApi.Models.CoursesTags", (fun b ->
 
-            b.Property<string>("ID")
+            b.Property<Guid>("Id")
+                .IsRequired(true)
+                .ValueGeneratedOnAdd()
+                .HasColumnType("TEXT")
+                |> ignore
+
+            b.Property<Guid>("CourseId")
                 .IsRequired(true)
                 .HasColumnType("TEXT")
                 |> ignore
 
-            b.Property<string>("CourseId")
+            b.Property<Guid>("TagId")
                 .IsRequired(true)
+                .HasColumnType("TEXT")
+                |> ignore
+
+            b.HasKey("Id")
+                |> ignore
+
+
+            b.ToTable("CoursesTags") |> ignore
+
+
+            b.HasData([|
+                {| Id = Guid("23dcf383-efb3-4d3c-bfd4-db4c0a9cf176"); CourseId = Guid("d88bf905-93b9-480f-8570-0857179ff142"); TagId = Guid("78b27375-67c1-4c44-b8a4-aba80658618d") |}
+                {| Id = Guid("cfc75180-c9e4-4492-85e4-94fa05784390"); CourseId = Guid("d88bf905-93b9-480f-8570-0857179ff142"); TagId = Guid("7ab183bb-cfd8-4a50-89e1-3b0ab650657c") |}
+                {| Id = Guid("eee74e3f-e2fc-48ad-a55d-ef1224a45559"); CourseId = Guid("acb5f349-5709-4b95-b065-66942262d860"); TagId = Guid("78b27375-67c1-4c44-b8a4-aba80658618d") |}
+                {| Id = Guid("32a90ac7-5119-423c-a303-d76831ef5912"); CourseId = Guid("acb5f349-5709-4b95-b065-66942262d860"); TagId = Guid("7ab183bb-cfd8-4a50-89e1-3b0ab650657c") |}
+                {| Id = Guid("69ffac87-3c40-41b7-82e5-251aa2e0b134"); CourseId = Guid("acb5f349-5709-4b95-b065-66942262d860"); TagId = Guid("e9dcf089-cbb1-4c68-b040-8148ce430714") |}
+             |]) |> ignore
+        )) |> ignore
+
+        modelBuilder.Entity("TestApi.Models.Tag", (fun b ->
+
+            b.Property<Guid>("Id")
+                .IsRequired(true)
+                .ValueGeneratedOnAdd()
                 .HasColumnType("TEXT")
                 |> ignore
 
@@ -73,26 +110,17 @@ type CoursesContextModelSnapshot() =
                 .HasColumnType("TEXT")
                 |> ignore
 
-            b.HasKey("ID")
+            b.HasKey("Id")
                 |> ignore
 
 
-            b.HasIndex("CourseId")
-                |> ignore
+            b.ToTable("Tags") |> ignore
 
-            b.ToTable("Tag") |> ignore
 
-        )) |> ignore
-        modelBuilder.Entity("TestApi.Models.Tag", (fun b ->
-            b.HasOne("TestApi.Models.Course", null)
-                .WithMany("Tags")
-                .HasForeignKey("CourseId")
-                |> ignore
-
-        )) |> ignore
-        modelBuilder.Entity("TestApi.Models.Course", (fun b ->
-
-            b.Navigation("Tags")
-            |> ignore
+            b.HasData([|
+                {| Id = Guid("78b27375-67c1-4c44-b8a4-aba80658618d"); DateAdded = DateTime(2022, 8, 7, 16, 29, 59, 601, DateTimeKind.Local).AddTicks(879L); DateUpdated = DateTime(2022, 8, 7, 16, 29, 59, 601, DateTimeKind.Local).AddTicks(881L); Name = "Tag 1" |}
+                {| Id = Guid("7ab183bb-cfd8-4a50-89e1-3b0ab650657c"); DateAdded = DateTime(2022, 8, 7, 16, 29, 59, 601, DateTimeKind.Local).AddTicks(884L); DateUpdated = DateTime(2022, 8, 7, 16, 29, 59, 601, DateTimeKind.Local).AddTicks(887L); Name = "Tag 2" |}
+                {| Id = Guid("e9dcf089-cbb1-4c68-b040-8148ce430714"); DateAdded = DateTime(2022, 8, 7, 16, 29, 59, 601, DateTimeKind.Local).AddTicks(890L); DateUpdated = DateTime(2022, 8, 7, 16, 29, 59, 601, DateTimeKind.Local).AddTicks(892L); Name = "Tag 3" |}
+             |]) |> ignore
         )) |> ignore
 

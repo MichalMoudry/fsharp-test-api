@@ -10,23 +10,58 @@ open Microsoft.EntityFrameworkCore.Storage.ValueConversion
 open TestApi.Db
 
 [<DbContext(typeof<DataContext.CoursesContext>)>]
-[<Migration("20220528125714_ChangedCourseModel")>]
-type ChangedCourseModel() =
+[<Migration("20220807142032_InitialMigration")>]
+type InitialMigration() =
     inherit Migration()
 
     override this.Up(migrationBuilder:MigrationBuilder) =
-        ()
+        migrationBuilder.CreateTable(
+            name = "Courses"
+            ,columns = (fun table -> 
+            {|
+                Id =
+                    table.Column<Guid>(
+                        nullable = false
+                        ,``type`` = "TEXT"
+                    )
+                Name =
+                    table.Column<string>(
+                        nullable = false
+                        ,``type`` = "TEXT"
+                    )
+                DateAdded =
+                    table.Column<DateTime>(
+                        nullable = false
+                        ,``type`` = "TEXT"
+                    )
+                DateUpdated =
+                    table.Column<DateTime>(
+                        nullable = false
+                        ,``type`` = "TEXT"
+                    )
+            |})
+            , constraints =
+                (fun table -> 
+                    table.PrimaryKey("PK_Courses", (fun x -> (x.Id) :> obj)
+                    ) |> ignore
+                )
+        ) |> ignore
+
 
     override this.Down(migrationBuilder:MigrationBuilder) =
-        ()
+        migrationBuilder.DropTable(
+            name = "Courses"
+            ) |> ignore
+
 
     override this.BuildTargetModel(modelBuilder: ModelBuilder) =
         modelBuilder.HasAnnotation("ProductVersion", "6.0.5") |> ignore
 
         modelBuilder.Entity("TestApi.Models.Course", (fun b ->
 
-            b.Property<string>("ID")
+            b.Property<Guid>("Id")
                 .IsRequired(true)
+                .ValueGeneratedOnAdd()
                 .HasColumnType("TEXT")
                 |> ignore
 
@@ -45,7 +80,7 @@ type ChangedCourseModel() =
                 .HasColumnType("TEXT")
                 |> ignore
 
-            b.HasKey("ID")
+            b.HasKey("Id")
                 |> ignore
 
 
