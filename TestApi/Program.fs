@@ -22,7 +22,7 @@ module Program =
                 options.KeyName <- "X-API-KEY"
 
         builder.Services.AddControllers()
-        builder.Services.AddDbContext<CoursesContext>()
+        builder.Services.AddDbContext<DatabaseContext>()
         builder.Services.AddAuthentication(ApiKeyDefaults.AuthenticationScheme)
             .AddApiKeyInHeader<ApiKeyProvider>(apiKeyConfig)
 

@@ -9,7 +9,7 @@ open Microsoft.EntityFrameworkCore.Migrations
 open Microsoft.EntityFrameworkCore.Storage.ValueConversion
 open TestApi.Db
 
-[<DbContext(typeof<DataContext.CoursesContext>)>]
+[<DbContext(typeof<DataContext.DatabaseContext>)>]
 type CoursesContextModelSnapshot() =
     inherit ModelSnapshot()
 

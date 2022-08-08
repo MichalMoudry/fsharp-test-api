@@ -2,6 +2,7 @@
 
 open Microsoft.AspNetCore.Mvc
 open TestApi.Models
+open TestApi.Db.Repositories
 open TestApi.Db
 open System
 open Microsoft.AspNetCore.Authorization
@@ -9,10 +10,10 @@ open Microsoft.AspNetCore.Authorization
 [<Authorize>]
 [<ApiController>]
 [<Route("[controller]")>]
-type CoursesController (context: DataContext.CoursesContext) =
+type CoursesController (context: DataContext.DatabaseContext) =
     inherit ControllerBase()
 
-    let coursesOps = new CoursesOperations(context)
+    let coursesOps = new CoursesRepository(context)
 
     [<HttpGet>]
     member _.Get() =

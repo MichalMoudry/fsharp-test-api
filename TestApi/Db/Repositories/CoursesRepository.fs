@@ -1,12 +1,13 @@
-namespace TestApi.Db
+namespace TestApi.Db.Repositories
 
 open System
 open TestApi.Db.DataContext
 open TestApi.Models
 open System.Linq
+open Microsoft.EntityFrameworkCore
 
-/// Class representing operations that relate to Course entity.
-type CoursesOperations(context: CoursesContext) =
+/// Repository related to Course entity.
+type CoursesRepository(context: DatabaseContext) =
     let dbContext = context
 
     /// Method for adding a new course to db.
@@ -22,11 +23,11 @@ type CoursesOperations(context: CoursesContext) =
         try
             Some(dbContext.Courses.Single(fun i -> i.Id.Equals(courseID)))
         with
-            | :? System.InvalidOperationException -> None
+            | :? InvalidOperationException -> None
 
     /// Method for obtaining all the courses as an array.
     member _.GetCourses() =
-        dbContext.Courses.ToArray()
+        dbContext.Courses.AsNoTracking().ToArray()
 
     /// <summary>Method for removing a course from db.</summary>
     /// <param name="courseID">ID of a course.</param>
@@ -47,7 +48,7 @@ type CoursesOperations(context: CoursesContext) =
             let course = this.GetCourse(newCourseData.Id)
             if course.IsSome then
                 course.Value.Name <- newCourseData.Name
-                course.Value.DateUpdated <- System.DateTime.Now
+                course.Value.DateUpdated <- DateTime.Now
                 dbContext.SaveChangesAsync() |> ignore
                 return true
             else

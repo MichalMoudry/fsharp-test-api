@@ -9,7 +9,7 @@ open Microsoft.EntityFrameworkCore.Migrations
 open Microsoft.EntityFrameworkCore.Storage.ValueConversion
 open TestApi.Db
 
-[<DbContext(typeof<DataContext.CoursesContext>)>]
+[<DbContext(typeof<DataContext.DatabaseContext>)>]
 [<Migration("20220807142959_SeedDataMigration")>]
 type SeedDataMigration() =
     inherit Migration()

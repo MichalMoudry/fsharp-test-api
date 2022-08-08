@@ -6,7 +6,7 @@ open EntityFrameworkCore.FSharp.Extensions
 open TestApi.Models
 
 module DataContext =
-    type CoursesContext () =
+    type DatabaseContext () =
         inherit DbContext()
 
         [<DefaultValue>]

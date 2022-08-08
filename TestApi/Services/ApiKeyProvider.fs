@@ -3,7 +3,6 @@ namespace TestApi.Services
 open AspNetCore.Authentication.ApiKey
 open TestApi.Models
 open Microsoft.Extensions.Configuration
-open System.Linq
 open System.Threading.Tasks
 
 type ApiKeyProvider(config: IConfiguration) =
