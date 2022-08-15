@@ -38,7 +38,7 @@ type ApiKey(key: string, isValid: bool, owner: string, ?claims: List<Claim>) =
             if claims.IsSome then
                 claims.Value
             else
-                new List<Claim>()
+                List<Claim>()
         member _.Key: string =
             key
         member _.OwnerName: string = 

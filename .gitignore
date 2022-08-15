@@ -1,4 +1,5 @@
 TestApi/.vs/
 TestApi/bin/
 TestApi/obj/
-TestApi/*.db*
+TestApi/*.db
+TestApi/.idea
