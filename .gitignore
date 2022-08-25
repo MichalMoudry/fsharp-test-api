@@ -3,3 +3,4 @@ TestApi/bin/
 TestApi/obj/
 TestApi/*.db
 TestApi/.idea
+.fake
