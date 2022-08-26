@@ -6,6 +6,7 @@ open TestApi.Db.Repositories
 open TestApi.Db
 open System
 open Microsoft.AspNetCore.Authorization
+open Ardalis.GuardClauses
 
 [<Authorize>]
 [<ApiController>]
@@ -33,6 +34,7 @@ type CoursesController (context: DataContext.DatabaseContext) =
     
     [<HttpPost>]
     member this.Post(course: Course): IActionResult =
+        Guard.Against.Null(course, nameof(course)) |> ignore
         course.Id <- Guid.NewGuid()
         task {
             coursesOps.AddCourse(course) |> ignore

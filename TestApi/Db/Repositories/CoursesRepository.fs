@@ -14,8 +14,11 @@ type CoursesRepository(context: DatabaseContext) =
     member _.AddCourse(course: Course) =
         task {
             dbContext.Courses.Add(course) |> ignore
-            dbContext.SaveChangesAsync() |> ignore
-            return true
+            let! numberOfEntites = dbContext.SaveChangesAsync() |> Async.AwaitTask
+            if numberOfEntites > 0 then
+                return true
+            else
+                return false
         }
 
     /// Method for obtaining a single Course entity.
