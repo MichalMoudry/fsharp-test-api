@@ -2,6 +2,7 @@
 
 open Microsoft.AspNetCore.Mvc
 open TestApi.Models
+open TestApi.Db.Repositories.Interfaces
 open TestApi.Db.Repositories
 open TestApi.Db
 open System
@@ -14,21 +15,17 @@ open Ardalis.GuardClauses
 type CoursesController (context: DataContext.DatabaseContext) =
     inherit ControllerBase()
 
-    let coursesOps = new CoursesRepository(context)
+    let coursesOps = (new CoursesRepository(context) :> IGenericRepository<Course>)
 
     [<HttpGet>]
     member _.Get() =
-        coursesOps.GetCourses()
+        coursesOps.GetAll()
     
     [<HttpGet("{id}")>]
     member this.Get(id: string): IActionResult =
         let parseResult, guid = Guid.TryParse(id)
         if parseResult then
-            let course = coursesOps.GetCourse(guid)
-            if course.IsSome then
-                this.Ok(course.Value)
-            else
-                this.BadRequest("Entity with this ID does not exist.")
+            this.Ok(coursesOps.GetById(guid))
         else
             this.BadRequest("Invalid id.")
     
@@ -36,25 +33,29 @@ type CoursesController (context: DataContext.DatabaseContext) =
     member this.Post(course: Course): IActionResult =
         Guard.Against.Null(course, nameof(course)) |> ignore
         course.Id <- Guid.NewGuid()
-        task {
+        this.Ok()
+        (*task {
             coursesOps.AddCourse(course) |> ignore
         } |> ignore
-        this.Ok(course)
+        this.Ok(course)*)
 
     [<HttpPut>]
     member this.Put(course: Course): IActionResult =
-        let updateTask = coursesOps.UpdateCourse(course)
+        let updateTask = coursesOps.Update(course)
+        (*¨
         updateTask.Wait()
         match updateTask.Result with
             | true -> this.Ok(course)
             | false -> this.BadRequest("Entity does not exist.")
+        *)
+        this.Ok()
 
     [<HttpDelete("{id}")>]
     member this.Delete(id: string): IActionResult =
         let parseResult, guid = Guid.TryParse(id)
         if parseResult then
             task {
-                coursesOps.DeleteCourse(guid) |> ignore
+                coursesOps.Delete(guid) |> ignore
             } |> ignore
             this.Ok("Object was deleted.")
         else

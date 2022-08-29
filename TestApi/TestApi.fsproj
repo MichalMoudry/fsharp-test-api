@@ -5,6 +5,7 @@
   <ItemGroup>
     <Compile Include="Models.fs" />
     <Compile Include="Db\*.fs" />
+    <Compile Include="Db\Repositories\Interfaces\*.fs" />
     <Compile Include="Db\Repositories\*.fs" />
     <Compile Include="Migrations\*.fs" />
     <Compile Include="Services\*.fs" />

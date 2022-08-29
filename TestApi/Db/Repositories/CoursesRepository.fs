@@ -1,6 +1,7 @@
 namespace TestApi.Db.Repositories
 
 open System
+open TestApi.Db.Repositories.Interfaces
 open TestApi.Db.DataContext
 open TestApi.Models
 open System.Linq
@@ -9,6 +10,11 @@ open Microsoft.EntityFrameworkCore
 /// Repository related to Course entity.
 type CoursesRepository(context: DatabaseContext) =
     let dbContext = context
+    interface IGenericRepository<Course> with
+        member _.GetAll() =
+            dbContext.Courses.AsNoTracking().ToArray()
+        member _.GetById(id: Guid) =
+            dbContext.Courses.Single(fun i -> i.Id.Equals(id))
 
     /// Method for adding a new course to db.
     member _.AddCourse(course: Course) =
@@ -22,11 +28,8 @@ type CoursesRepository(context: DatabaseContext) =
         }
 
     /// Method for obtaining a single Course entity.
-    member _.GetCourse(courseID: Guid) =
-        try
-            Some(dbContext.Courses.Single(fun i -> i.Id.Equals(courseID)))
-        with
-            | :? InvalidOperationException -> None
+    member this.GetCourse(id: Guid) =
+        (this :> IGenericRepository<Course>).GetById(id)
 
     /// Method for obtaining all the courses as an array.
     member _.GetCourses() =
@@ -37,23 +40,17 @@ type CoursesRepository(context: DatabaseContext) =
     member this.DeleteCourse(courseID: Guid) =
         task {
             let course = this.GetCourse(courseID)
-            if course.IsSome then
-                dbContext.Courses.Remove(course.Value) |> ignore
-                dbContext.SaveChangesAsync() |> ignore
-                return true
-            else
-                return false
+            dbContext.Courses.Remove(course) |> ignore
+            dbContext.SaveChangesAsync() |> ignore
+            return true
         }
 
     /// Method for updating an entity.
     member this.UpdateCourse(newCourseData: Course) =
         task {
             let course = this.GetCourse(newCourseData.Id)
-            if course.IsSome then
-                course.Value.Name <- newCourseData.Name
-                course.Value.DateUpdated <- DateTime.Now
-                dbContext.SaveChangesAsync() |> ignore
-                return true
-            else
-                return false
+            course.Name <- newCourseData.Name
+            course.DateUpdated <- DateTime.Now
+            dbContext.SaveChangesAsync() |> ignore
+            return true
         }
